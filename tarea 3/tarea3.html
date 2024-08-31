@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel Script -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/jsx">
+        function Header({ title }) {
+            return <h1>{title ? title : 'Pikmin'}</h1>;
+        }
+
+        function FavoritePikminPrompt() {
+            return <h1>¿Cuál es tu Pikmin favorito?</h1>;
+        }
+
+        function LikeButton({ count, onClick }) {
+            return (
+                <button onClick={onClick} className="like-button">
+                    Like {count}
+                </button>
+            );
+        }
+
+        function HomePage() {
+            const [likes, setLikes] = React.useState({
+                'Pikmin Rojo': 0,
+                'Pikmin Amarillo': 0,
+                'Pikmin Azul': 0,
+                'Pikmin Morado': 0,
+                'Pikmin Blanco': 0,
+                'Pikmin Rosado': 0,
+                'Pikmin Carbón': 0
+            });
+
+            const colores = [
+                { name: 'Pikmin Rojo', className: 'pikmin-rojo', imgSrc: 'pikmin rojo.jpeg' },
+                { name: 'Pikmin Amarillo', className: 'pikmin-amarillo', imgSrc: 'pikmin amarillo.jpeg' },
+                { name: 'Pikmin Azul', className: 'pikmin-azul', imgSrc: 'pikmin azul.jpeg' },
+                { name: 'Pikmin Morado', className: 'pikmin-morado', imgSrc: 'pikmin morado.jpeg' },
+                { name: 'Pikmin Blanco', className: 'pikmin-blanco', imgSrc: 'pikmin blanco.jpeg' },
+                { name: 'Pikmin Rosado', className: 'pikmin-rosado', imgSrc: 'pikmin rosado.jpeg' },
+                { name: 'Pikmin Carbón', className: 'pikmin-carbon', imgSrc: 'pikmin carbon.jpeg' }
+            ];
+
+            function handleLike(name) {
+                setLikes((prevLikes) => ({
+                    ...prevLikes,
+                    [name]: prevLikes[name] + 1
+                }));
+            }
+
+            return (
+                <div>
+                    <Header title="Tipos de Pikmin" />
+                    <FavoritePikminPrompt />
+                    <ul>
+                        {colores.map((pikmin) => (
+                            <li key={pikmin.name} className={`list-item ${pikmin.className}`}>
+                                {pikmin.name}
+                                <LikeButton 
+                                    count={likes[pikmin.name]} 
+                                    onClick={() => handleLike(pikmin.name)} 
+                                />
+                                <div>
+                                    <img src={pikmin.imgSrc} alt={pikmin.name} className="pikmin-img" />
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('app'));
+        root.render(<HomePage />);
+    </script>
+  </body>
+</html>
